@@ -1,0 +1,108 @@
+﻿<!DOCTYPE html>
+<html ng-app="m3App">
+<head>
+    <!--[if lt IE 9]>
+        <script>
+            alert("This application does not work on IE8 or below! Please obtain a newer browser, or try a portable version of Firefox.");
+            window.location = "https://google.com";
+        </script>
+    <![endif]-->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="description" content="My Movie Manager, keeping track of your local movies.">
+    <meta name="author" content="Erik Vullings">
+    <meta name="color:Accent" content="#a98e2e" />
+
+    <!--TODO Add your title here-->
+    <title>m3</title>
+
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap-theme.min.css" />
+    <link rel="stylesheet" href="bower_components/Font-Awesome/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="css/pnotify.custom.min.css" />
+    <link rel="stylesheet" href="css/style.css">
+
+    <link rel="shortcut icon" href="favicon.ico">
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        var socket = io();
+    </script>
+</head>
+<body data-ng-controller="appCtrl">
+    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="bower_components/angular/angular.min.js"></script>
+    <script src="bower_components/angular-route/angular-route.min.js"></script>
+    <script src="bower_components/angular-bootstrap/ui-bootstrap.min.js"></script>
+    <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+    <!--<script src="bower_components/angular-utils-pagination/dirPagination.js"></script>-->
+    <script src="bower_components/angular-local-storage/dist/angular-local-storage.min.js"></script>
+    <script src="bower_components/angular-translate/angular-translate.min.js"></script>
+    <script src="bower_components/angular-socket-io/socket.min.js"></script>
+    <!--    <script src="bower_components/async/lib/async.js"></script>-->
+
+    <script src="js/pnotify.custom.min.js"></script>
+    <script src="js/stringformat-1.09.min.min.js"></script>
+    <script src="js/stringformat.nl-NL.min.js"></script>
+
+    <script src="dist/m3.js"></script>
+
+    <div role="navigation" class="navbar navbar-inverse navbar-fixed-top" style="background: black">
+        <div class="navbar-header" data-ng-cloak>
+            <!--Start collection dropdown-->
+            <ul class="nav navbar-nav">
+                <li class="dropdown">
+                    <a href="#" class="navbar-brand dropdown-toggle" style="color: white">
+                        {{vm.collection.title}}<span class="caret"></span>
+                    </a>
+                    <ul data-ng-if="vm.collections.length > 1" class="dropdown-menu" role="menu">
+                        <li ng-repeat="collection in vm.collections track by $index"><a ng-click="vm.openCollection(collection)">{{collection.title}}</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <!--End collection dropdown-->
+        </div>
+        <div class="navbar-collapse collapse" ng-init="titleStyle={color:'white'}; ratingStyle={color:'grey'}">
+            <form class="navbar-form navbar-right" style="margin-right:0" role="search">
+                <div id="scrollable-dropdown-menu" class="form-group has-feedback navbar-right pull-right">
+                    <input data-ng-model="vm.movieService.filterKeywords"
+                           id="searchbox"
+                           type="text"
+                           placeholder="Filter"
+                           class="form-control">
+                    <span id="searchicon" class="fa fa-filter form-control-feedback" style="color: black; margin-top: .7em"></span>
+                </div>
+            </form>
+            <div id="rating" class="navbar-form navbar-right">
+                <a href="/#/"
+                   ng-style="ratingStyle"
+                   ng-click="vm.movieService.orderPredicate = 'vote_average'; vm.movieService.orderDirection=!vm.movieService.orderDirection; ratingStyle={color:'white'}; titleStyle={color:'grey'}">
+                    <i style="margin-top: .5em" ng-show="!vm.movieService.orderDirection" class="fa fa-lg fa-sort-numeric-asc"></i>
+                    <i style="margin-top: .5em" ng-show="vm.movieService.orderDirection" class="fa fa-lg fa-sort-numeric-desc"></i>
+                </a>
+            </div>
+            <div id="title" class="navbar-form navbar-right">
+                <a href="/#/"                   
+                   ng-style="titleStyle" 
+                   ng-click="vm.movieService.orderPredicate = 'title'; vm.movieService.orderDirection=!vm.movieService.orderDirection; ratingStyle={color:'grey'}; titleStyle={color:'white'}">
+                    <i style="margin-top: .5em" ng-show="!vm.movieService.orderDirection" class="fa fa-lg fa-sort-alpha-asc"></i>
+                    <i style="margin-top: .5em" ng-show="vm.movieService.orderDirection" class="fa fa-lg fa-sort-alpha-desc"></i>
+                </a>
+            </div>
+        </div>
+
+        <!-- Link to views -->
+        <!--<div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li data-ng-class="{ active: vm.isActive('/map')}"><a href="#/map" data-ng-click="showMap=true" translate="MAP_LABEL"></a></li>
+                <li data-ng-class="{ active: vm.isActive('/table')}"><a href="#/table" data-ng-click="vm.showTable()" translate="TABLE_LABEL"></a></li>
+            </ul>
+        </div>-->
+    </div>
+    <div ng-view style="margin: 60px 10px 10px 10px;"></div>
+
+</body>
+</html>

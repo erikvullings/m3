@@ -1,0 +1,39 @@
+{
+  "name": "csWeb",
+  "version": "0.0.0",
+  "authors": [
+    "Erik Vullings"
+  ],
+  "main": "specifications.js",
+  "moduleType": [
+    "node"
+  ],
+  "keywords": [
+    "movie"
+  ],
+  "license": "MIT",
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "~1.3.6",
+    "angular-ui-router": "~0.2.11",
+    "angular-local-storage": "~0.1.0",
+    "angular-bootstrap": "~0.11.0",
+    "async": "~0.9.0",
+    "bootstrap": "~3.2.0",
+    "Font-Awesome": "*",
+    "angular-translate": "~2.5.2",
+    "pnotify": "~2.0.1",
+    "jquery": "~2.1.1"
+  },
+  "devDependencies": {
+    "jasmine": "~2.1.3"
+  }
+}

@@ -1,0 +1,17 @@
+﻿<div>
+    <ul id="movies-list">
+        <li ng-repeat="movie in vm.collection.movies | filter: vm.movieService.filterKeywords | orderBy:vm.movieService.orderPredicate:vm.movieService.orderDirection">
+            <a class="image" href="#/movie/{{movie.id}}" title="{{movie.overview}} rel="tooltip">
+                <!--NOTE: Images are supplied in several formats, determined by the folder name,
+                    e.g. w184 represents an image whose width is 184 pixels. You also have w92, 
+                    and original (full size) -->
+                <img ng-src="http://image.tmdb.org/t/p/original{{movie.poster_path}}" alt="Movie icon" width="184" />
+            </a>
+            <div>
+                <h3>{{movie.title}}</h3>
+                <p>Released on {{movie.release_date}}.</p>
+                <p ng-if="movie.vote_average > 0">Vote average: <strong>{{movie.vote_average}}</strong></p>
+            </div>
+        </li>
+    </ul>
+</div>

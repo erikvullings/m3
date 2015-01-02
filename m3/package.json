@@ -1,0 +1,19 @@
+{
+  "name": "m3",
+  "version": "0.0.0",
+  "description": "m3",
+  "main": "server.js",
+  "author": {
+    "name": "Erik",
+    "email": "erik.vullings@gmail.com"
+  },
+  "dependencies": {
+    "async": "^0.9.0",
+    "express":  "~4.0.0",
+    "jade": "*",
+    "moviedb": "~0.1.4",
+    "readdirp": "~1.1.0",
+    "socket.io": "^1.2.1",
+    "stylus": "*"
+  }
+}
