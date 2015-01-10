@@ -1,7 +1,67 @@
+var App;
+(function (App) {
+    var MovieCtrl = (function () {
+        function MovieCtrl($scope, $routeParams, movieService, messageBusService) {
+            this.$scope = $scope;
+            this.$routeParams = $routeParams;
+            this.movieService = movieService;
+            this.messageBusService = messageBusService;
+            $scope.vm = this;
+            console.log($routeParams);
+            if (typeof $routeParams == 'undefined' || $routeParams == null || $routeParams.movieId == null)
+                return;
+            var movieId = +$routeParams.movieId;
+            this.movie = movieService.getMovieById(movieId);
+        }
+        Object.defineProperty(MovieCtrl.prototype, "collections", {
+            get: function () {
+                return this.movieService.collections;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        MovieCtrl.$inject = [
+            '$scope',
+            '$routeParams',
+            'movieService',
+            'messageBusService'
+        ];
+        return MovieCtrl;
+    })();
+    App.MovieCtrl = MovieCtrl;
+})(App || (App = {}));
 var Models;
 (function (Models) {
     'use strict';
 })(Models || (Models = {}));
+var Translations;
+(function (Translations) {
+    var English = (function () {
+        function English() {
+        }
+        English.locale = {
+            CANCEL_BTN: 'Cancel',
+            OK_BTN: 'OK',
+            SEARCH: 'Search'
+        };
+        return English;
+    })();
+    Translations.English = English;
+})(Translations || (Translations = {}));
+var Translations;
+(function (Translations) {
+    var Dutch = (function () {
+        function Dutch() {
+        }
+        Dutch.locale = {
+            CANCEL_BTN: 'Annuleren',
+            OK_BTN: 'OK',
+            SEARCH: 'Zoeken'
+        };
+        return Dutch;
+    })();
+    Translations.Dutch = Dutch;
+})(Translations || (Translations = {}));
 var Services;
 (function (Services) {
     // Handle returned when subscribing to a topic
@@ -220,6 +280,9 @@ var Services;
             });
             this.collection = this.collections[0];
             $socket.emit('message', 'MovieService', 'Hello world');
+            $socket.on('broadcast', function (from, msg) {
+                alert('From: ' + from + ', Message: ' + msg);
+            });
             $http.get('/data/movies.json').success(function (movies) {
                 _this.movies = movies;
                 _this.collections.forEach(function (collection) {
@@ -269,66 +332,6 @@ var Services;
     })();
     Services.MovieService = MovieService;
 })(Services || (Services = {}));
-var Translations;
-(function (Translations) {
-    var English = (function () {
-        function English() {
-        }
-        English.locale = {
-            CANCEL_BTN: 'Cancel',
-            OK_BTN: 'OK',
-            SEARCH: 'Search'
-        };
-        return English;
-    })();
-    Translations.English = English;
-})(Translations || (Translations = {}));
-var Translations;
-(function (Translations) {
-    var Dutch = (function () {
-        function Dutch() {
-        }
-        Dutch.locale = {
-            CANCEL_BTN: 'Annuleren',
-            OK_BTN: 'OK',
-            SEARCH: 'Zoeken'
-        };
-        return Dutch;
-    })();
-    Translations.Dutch = Dutch;
-})(Translations || (Translations = {}));
-var App;
-(function (App) {
-    var MovieCtrl = (function () {
-        function MovieCtrl($scope, $routeParams, movieService, messageBusService) {
-            this.$scope = $scope;
-            this.$routeParams = $routeParams;
-            this.movieService = movieService;
-            this.messageBusService = messageBusService;
-            $scope.vm = this;
-            console.log($routeParams);
-            if (typeof $routeParams == 'undefined' || $routeParams == null || $routeParams.movieId == null)
-                return;
-            var movieId = +$routeParams.movieId;
-            this.movie = movieService.getMovieById(movieId);
-        }
-        Object.defineProperty(MovieCtrl.prototype, "collections", {
-            get: function () {
-                return this.movieService.collections;
-            },
-            enumerable: true,
-            configurable: true
-        });
-        MovieCtrl.$inject = [
-            '$scope',
-            '$routeParams',
-            'movieService',
-            'messageBusService'
-        ];
-        return MovieCtrl;
-    })();
-    App.MovieCtrl = MovieCtrl;
-})(App || (App = {}));
 var App;
 (function (App) {
     var MoviesCtrl = (function () {

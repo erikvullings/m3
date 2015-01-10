@@ -1,8 +1,16 @@
-declare module Models {
-    interface ICollection {
-        title: string;
-        path: string;
-        movies?: IMovie[];
+declare module App {
+    interface IMovieScope extends ng.IScope {
+        vm: MovieCtrl;
+    }
+    class MovieCtrl {
+        private $scope;
+        private $routeParams;
+        private movieService;
+        private messageBusService;
+        movie: Models.IMovie;
+        static $inject: string[];
+        constructor($scope: IMovieScope, $routeParams: any, movieService: Services.MovieService, messageBusService: Services.MessageBusService);
+        collections: Models.ICollection[];
     }
 }
 declare module Models {
@@ -84,6 +92,23 @@ declare module Models {
         castCrew: ICastCrew;
     }
 }
+declare module Models {
+    interface ICollection {
+        title: string;
+        path: string;
+        movies?: IMovie[];
+    }
+}
+declare module Translations {
+    class English {
+        static locale: ng.translate.ITranslationTable;
+    }
+}
+declare module Translations {
+    class Dutch {
+        static locale: ng.translate.ITranslationTable;
+    }
+}
 declare module Services {
     interface IMessageBusCallback {
         (title: string, data?: any): any;
@@ -163,31 +188,6 @@ declare module Services {
         constructor($http: ng.IHttpService, $messageBusService: MessageBusService, $socket: SocketIOClient.Socket);
         openCollection(collection?: ICollection): void;
         getMovieById(movieId: number): Models.IMovie;
-    }
-}
-declare module Translations {
-    class English {
-        static locale: ng.translate.ITranslationTable;
-    }
-}
-declare module Translations {
-    class Dutch {
-        static locale: ng.translate.ITranslationTable;
-    }
-}
-declare module App {
-    interface IMovieScope extends ng.IScope {
-        vm: MovieCtrl;
-    }
-    class MovieCtrl {
-        private $scope;
-        private $routeParams;
-        private movieService;
-        private messageBusService;
-        movie: Models.IMovie;
-        static $inject: string[];
-        constructor($scope: IMovieScope, $routeParams: any, movieService: Services.MovieService, messageBusService: Services.MessageBusService);
-        collections: Models.ICollection[];
     }
 }
 declare module App {

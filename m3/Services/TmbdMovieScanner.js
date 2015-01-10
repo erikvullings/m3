@@ -1,6 +1,5 @@
 var fs = require('fs');
 var path = require('path');
-var async = require('async');
 var moviedb = require('moviedb');
 var Store = require('./Store');
 var TmbdMovieScanner = (function () {
@@ -86,43 +85,43 @@ var TmbdMovieScanner = (function () {
                     console.log('Error: ' + err2);
                     return;
                 }
-                _this.movieDb.movieCasts({ id: movieId }, function (err3, castCrew) {
-                    if (err3) {
-                        console.log('Error: ' + err3);
-                        return;
-                    }
-                    curMovie.castCrew = castCrew;
-                    // Create a copy of 'this', as in the below async call, 'this' is undefined.
-                    async.every(castCrew.cast, function (cast) {
-                        if (Store.existsPersonById(cast.id.toString()))
-                            return;
-                        _this.movieDb.personInfo({ id: cast.id }, function (err4, person) {
-                            if (err4) {
-                                console.log('Error: ' + err4);
-                                return;
-                            }
-                            //console.log(person);
-                            Store.addPerson(person);
-                        });
-                    }, function (err5) {
-                        if (err5) {
-                            console.log('Error: ' + err5);
-                            return;
-                        }
-                        this.saveFile(file, curMovie);
-                        curMovie.collection = collectionTitle;
-                        Store.addMovie(curMovie, entry.fullPath);
-                    });
-                    //for (var i = 0; i < castCrew.cast.length; i++) {
-                    //    this.movieDb.personInfo({ id: castCrew.cast[i].id }, (err, info) => {
-                    //        if (err) {
-                    //            console.log('Error: ' + err);
-                    //            return;
-                    //        }
-                    //        console.log(info);                           
-                    //    });
-                    //}
-                });
+                //this.movieDb.movieCasts({ id: movieId }, (err3, castCrew) => {
+                //    if (err3) {
+                //        console.log('Error: ' + err3);
+                //        return;
+                //    }
+                //    curMovie.castCrew = castCrew;
+                //    // Create a copy of 'this', as in the below async call, 'this' is undefined.
+                //    async.every(castCrew.cast, (cast) => {
+                //        if (Store.existsPersonById(cast.id.toString())) return;
+                //        this.movieDb.personInfo({ id: cast.id }, (err4, person) => {
+                //            if (err4) {
+                //                console.log('Error: ' + err4);
+                //                return;
+                //            }
+                //            //console.log(person);
+                //            Store.addPerson(person);
+                //        });
+                //    },
+                //        function (err5) {
+                //            if (err5) {
+                //                console.log('Error: ' + err5);
+                //                return;
+                //            }
+                //            this.saveFile(file, curMovie);
+                //            curMovie.collection = collectionTitle;
+                //            Store.addMovie(curMovie, entry.fullPath);
+                //        });
+                //    //for (var i = 0; i < castCrew.cast.length; i++) {
+                //    //    this.movieDb.personInfo({ id: castCrew.cast[i].id }, (err, info) => {
+                //    //        if (err) {
+                //    //            console.log('Error: ' + err);
+                //    //            return;
+                //    //        }
+                //    //        console.log(info);                           
+                //    //    });
+                //    //}
+                //});
             });
         });
     };

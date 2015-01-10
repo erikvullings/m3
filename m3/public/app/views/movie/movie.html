@@ -15,13 +15,13 @@
         <p ng-if="vm.movie.vote_average > 0">Vote average: <strong>{{vm.movie.vote_average}}</strong></p>
         <ul ng-if="vm.movie.castCrew.cast.length > 0" id="actors-list" class="cf">
             <li ng-repeat="actor in vm.movie.castCrew.cast">
-                <a target="_blank" ng-href="https://www.themoviedb.org/person/{{actor.id}}" class="image">
+                <a href="" target="_blank" ng-href="https://www.themoviedb.org/person/{{actor.id}}" class="image">
                     <img ng-src="https://image.tmdb.org/t/p/w185/{{actor.profile_path}}" alt="Profile" height="50" />
                 </a>
-                <span><a target="_blank" ng-href="https://www.themoviedb.org/person/{{actor.id}}">{{actor.name}}</a> as {{actor.character}}</span>
+                <span><a href="" target="_blank" ng-href="https://www.themoviedb.org/person/{{actor.id}}">{{actor.name}}</a> as {{actor.character}}</span>
             </li>
         </ul>
-        <p class="right">For more information, see <a target="_blank" ng-href="http://www.themoviedb.org/movie/{{vm.movie.id}}">TheMovieDB</a>.
+        <p class="right">For more information, see <a href="" target="_blank" ng-href="http://www.themoviedb.org/movie/{{vm.movie.id}}">TheMovieDB</a>.
         </p>
         <!--<pre>{{vm.movie.castCrew.cast | json : 2}}</pre>-->
     </div>

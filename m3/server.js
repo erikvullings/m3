@@ -27,7 +27,7 @@ var server = require('http').createServer(app);
 var io = require('socket.io')(server);
 io.on('connection', function (socket) {
     console.log('A user connected');
-    socket.broadcast.emit('user connected');
+    socket.broadcast.emit('user ' + socket.id + ' connected.');
     socket.on('message', function (from, msg) {
         console.log('recieved message from', from, 'msg', JSON.stringify(msg));
         console.log('broadcasting message');

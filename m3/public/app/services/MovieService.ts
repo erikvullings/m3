@@ -41,6 +41,10 @@ module Services {
 
             $socket.emit('message', 'MovieService', 'Hello world');
 
+            $socket.on('broadcast', (from, msg) => {
+                alert('From: ' + from + ', Message: ' + msg); 
+            });
+
             $http.get('/data/movies.json').success((movies: Models.IMovie[]) => {
                 this.movies = movies;
                 this.collections.forEach((collection) => {
