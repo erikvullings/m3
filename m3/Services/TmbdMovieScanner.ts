@@ -70,30 +70,35 @@ export class TmbdMovieScanner {
     }
 
     // Save the file to disk
-    saveFile(file: string, data: any) {
-        fs.writeFile(file, JSON.stringify(data, null, 2), err => {
+    saveFile(file: string, movie: MovieDB.Movie) {
+        fs.writeFile(file, JSON.stringify(movie, null, 2), err => {
             if (err) {
-                console.log(err);
-            } else {
-                console.log('JSON saved to ' + file);
-            }
+                console.log('Error saveFile: ' + err);
+                return;
+            } 
+            console.log('Saved \'' + movie.title + '\' to ' + file + '.');
         });
     }
 
-    // Get the movie info from TMBD, save the results, and add it to the movies collection.
+    /**
+     * Get the movie info from TMBD, save the results, and add it to the movies collection.
+     */
     getMovieInfo(collectionTitle: string, file: string, entry: readdirp.Entry) {
         this.movieDb.searchMovie({ query: this.filmName(entry) }, (err, res) => {
             if (err) {
-                console.log('Error: ' + err);
+                console.log('Error getMovieInfo.searchMovie: ' + err);
                 return;
             }
             if (res.results.length <= 0) return;
             var movieId = res.results[0].id;
             this.movieDb.movieInfo({ id: movieId }, (err2, curMovie) => {
                 if (err2) {
-                    console.log('Error: ' + err2);
+                    console.log('Error getMovieInfo.movieInfo: ' + err2);
                     return;
                 }
+                this.saveFile(file, curMovie);
+                curMovie.collection = collectionTitle;
+                Store.addMovie(curMovie, entry.fullPath);
                 //this.movieDb.movieCasts({ id: movieId }, (err3, castCrew) => {
                 //    if (err3) {
                 //        console.log('Error: ' + err3);

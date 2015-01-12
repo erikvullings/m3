@@ -59,22 +59,23 @@ var TmbdMovieScanner = (function () {
         }
     };
     // Save the file to disk
-    TmbdMovieScanner.prototype.saveFile = function (file, data) {
-        fs.writeFile(file, JSON.stringify(data, null, 2), function (err) {
+    TmbdMovieScanner.prototype.saveFile = function (file, movie) {
+        fs.writeFile(file, JSON.stringify(movie, null, 2), function (err) {
             if (err) {
-                console.log(err);
+                console.log('Error saveFile: ' + err);
+                return;
             }
-            else {
-                console.log('JSON saved to ' + file);
-            }
+            console.log('Saved \'' + movie.title + '\' to ' + file + '.');
         });
     };
-    // Get the movie info from TMBD, save the results, and add it to the movies collection.
+    /**
+     * Get the movie info from TMBD, save the results, and add it to the movies collection.
+     */
     TmbdMovieScanner.prototype.getMovieInfo = function (collectionTitle, file, entry) {
         var _this = this;
         this.movieDb.searchMovie({ query: this.filmName(entry) }, function (err, res) {
             if (err) {
-                console.log('Error: ' + err);
+                console.log('Error getMovieInfo.searchMovie: ' + err);
                 return;
             }
             if (res.results.length <= 0)
@@ -82,9 +83,12 @@ var TmbdMovieScanner = (function () {
             var movieId = res.results[0].id;
             _this.movieDb.movieInfo({ id: movieId }, function (err2, curMovie) {
                 if (err2) {
-                    console.log('Error: ' + err2);
+                    console.log('Error getMovieInfo.movieInfo: ' + err2);
                     return;
                 }
+                _this.saveFile(file, curMovie);
+                curMovie.collection = collectionTitle;
+                Store.addMovie(curMovie, entry.fullPath);
                 //this.movieDb.movieCasts({ id: movieId }, (err3, castCrew) => {
                 //    if (err3) {
                 //        console.log('Error: ' + err3);
